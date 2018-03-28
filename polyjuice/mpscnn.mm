@@ -311,6 +311,11 @@ public:
         
         Timer copyOutT;
         
+        if(!output) {
+            output = (float *) malloc(128 * 128 * 3 * sizeof(float));
+        }
+        
+        memcpy(output, [outputBuffer_ contents], outputBuffer_.length);
         
 //        Output(i)->Resize(Xi.numberOfImages, Xi.featureChannels, Xi.height, Xi.width);
 //        Output(i)->mutable_data<float>();
@@ -320,9 +325,10 @@ public:
 //        VLOG(2) << "CopyFromMPSCNNOp memcpy took: " << copyOutT.MilliSeconds();
 //
 //        VLOG(2) << "CopyFromMPSCNNOp took: " << t.MilliSeconds();
-        return true;
+        return output;
     }
     
 private:
     id<MTLBuffer> outputBuffer_;
+    float * output;
 };
